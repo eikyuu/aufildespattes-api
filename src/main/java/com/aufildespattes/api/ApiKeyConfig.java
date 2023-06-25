@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@PropertySource("classpath:apikey.properties")
+@PropertySource("classpath:api.properties")
 public class ApiKeyConfig {
 	
 	@Value("${API_KEY}")
