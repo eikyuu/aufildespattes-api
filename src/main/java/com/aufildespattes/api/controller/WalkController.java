@@ -49,7 +49,7 @@ public class WalkController {
 
         RestTemplate restTemplate = new RestTemplate();
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(GEOCODING_URI)
-                .queryParam("address", Utils.formatAddress(walk.getStreet()))
+                .queryParam("address", Utils.formatAddress(walk.getStreet()) + walk.getPostalCode())
                 .queryParam("key", API_KEY)
                 .queryParam("language", LANGUAGE);
         try {
