@@ -59,7 +59,7 @@ public class Walk {
 
     @NotNull
     @Column(name = "cyanobacteria_alert")
-    private boolean cyanobacteria_alert;
+    private boolean cyanobacteriaAlert;
 
     @NotNull
     private Integer note;
@@ -168,12 +168,12 @@ public class Walk {
 		this.processionaryCaterpillarAlert = processionaryCaterpillarAlert;
 	}
 
-	public boolean isCyanobacteria_alert() {
-		return cyanobacteria_alert;
+	public boolean isCyanobacteriaAlert() {
+		return cyanobacteriaAlert;
 	}
 
-	public void setCyanobacteria_alert(boolean cyanobacteria_alert) {
-		this.cyanobacteria_alert = cyanobacteria_alert;
+	public void setCyanobacteria_alert(boolean cyanobacteriaAlert) {
+		this.cyanobacteriaAlert = cyanobacteriaAlert;
 	}
 
 	public Integer getNote() {
