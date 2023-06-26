@@ -33,4 +33,8 @@ public class WalkService {
        return walkRepository.save(walk);
     }
 
+    public Walk getWalkBySlug(String slug) {
+        return walkRepository.findBySlug(slug);
+    }
+
 }

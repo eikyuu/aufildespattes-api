@@ -1,17 +1,20 @@
 package com.aufildespattes.api.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.aufildespattes.api.constant.ObligatoryLeash;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -71,6 +74,18 @@ public class Walk {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+	@OneToMany(mappedBy = "walk")
+	@JsonIgnoreProperties("walk")
+	private List<WalkImage> images;
+
+	public List<WalkImage> getImages() {
+		return images;
+	}
+
+	public void setImages(List<WalkImage> images) {
+		this.images = images;
+	}
 
 	public Integer getId() {
 		return id;

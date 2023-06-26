@@ -3,11 +3,9 @@ package com.aufildespattes.api.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.aufildespattes.api.entity.Walk;
+import com.aufildespattes.api.entity.Review;
 
 @Repository
-public interface WalkRepository extends CrudRepository<Walk, Long> {
-
-    Walk findBySlug(String slug);
+public interface ReviewRepository extends CrudRepository<Review, Long> {
     
 }

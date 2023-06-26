@@ -1,22 +1,38 @@
 package com.aufildespattes.api.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.aufildespattes.api.entity.Walk;
+import com.aufildespattes.api.entity.WalkImage;
 import com.aufildespattes.api.model.GeoCoding;
+import com.aufildespattes.api.service.WalkImageService;
 import com.aufildespattes.api.service.WalkService;
 import com.aufildespattes.api.utils.Utils;
 import org.springframework.core.env.Environment;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 @RestController
 public class WalkController {
@@ -27,6 +43,9 @@ public class WalkController {
 
     @Autowired
     private WalkService walkService;
+
+    @Autowired
+    private WalkImageService walkImageService;
 
     @Autowired
     private Environment env;
@@ -63,6 +82,52 @@ public class WalkController {
         } catch (RestClientException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PostMapping(path = "/image")
+    public WalkImage saveWalkImagre(@RequestParam("image") MultipartFile file,
+            @NotBlank @RequestParam("slug") String walkSlug) throws IOException {
+        Walk walk = walkService.getWalkBySlug(walkSlug);
+
+        if (walk == null) {
+            throw new IllegalArgumentException("Invalid walk slug");
+        }
+
+        String fileExtension = FileUploadUtil.getExtension(file.getOriginalFilename());
+
+        if (!Arrays.asList("jpg", "jpeg", "png").contains(fileExtension)) {
+            throw new IllegalArgumentException("Invalid file type");
+        }
+
+        if (file.getSize() > 1048576) {
+            throw new IllegalArgumentException("File size exceeds limit");
+        }
+
+        try {
+
+            final String fileName = System.currentTimeMillis() + "-"
+                    + StringUtils.cleanPath(file.getOriginalFilename());
+            final String uploadDir = "src/main/resources/static/images";
+
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+            WalkImage walkImage = new WalkImage();
+
+            walkImage.setName(fileName);
+            walkImage.setWalk(walk);
+            walkImageService.saveWalkImage(walkImage);
+
+            return walkImage;
+        } catch (IOException e) {
+            throw new IOException("Could not store file " + file.getOriginalFilename() + ". Please try again!");
+        }
+    }
+
+    @GetMapping("{slug}")
+    public void getImages(@PathVariable String slug, HttpServletResponse response) throws IOException {
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        InputStream is = new FileInputStream("src/main/resources/static/images/" + slug);
+        StreamUtils.copy(is, response.getOutputStream());
     }
 
 }

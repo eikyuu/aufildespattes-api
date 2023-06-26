@@ -3,11 +3,10 @@ package com.aufildespattes.api.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.aufildespattes.api.entity.Walk;
+import com.aufildespattes.api.entity.WalkImage;
 
 @Repository
-public interface WalkRepository extends CrudRepository<Walk, Long> {
-
-    Walk findBySlug(String slug);
+public interface WalkImageRepository extends CrudRepository<WalkImage, Long> {
     
+    WalkImage getWalkImageByName(String name);
 }
