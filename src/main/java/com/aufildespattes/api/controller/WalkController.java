@@ -39,6 +39,7 @@ public class WalkController {
 
     private static final String GEOCODING_URI = "https://maps.googleapis.com/maps/api/geocode/json";
     private static final String LANGUAGE = "fr";
+    private static final String UPLOAD_DIR = "src/main/resources/static/images/";
     private String API_KEY;
 
     @Autowired
@@ -107,7 +108,7 @@ public class WalkController {
 
             final String fileName = System.currentTimeMillis() + "-"
                     + StringUtils.cleanPath(file.getOriginalFilename());
-            final String uploadDir = "src/main/resources/static/images";
+            final String uploadDir = UPLOAD_DIR;
 
             FileUploadUtil.saveFile(uploadDir, fileName, file);
 
@@ -126,7 +127,7 @@ public class WalkController {
     @GetMapping("{slug}")
     public void getImages(@PathVariable String slug, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        InputStream is = new FileInputStream("src/main/resources/static/images/" + slug);
+        InputStream is = new FileInputStream(UPLOAD_DIR + slug);
         StreamUtils.copy(is, response.getOutputStream());
     }
 
