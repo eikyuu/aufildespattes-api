@@ -124,6 +124,12 @@ public class WalkController {
         }
     }
 
+    @GetMapping("walk/{slug}")
+    public Walk getWalkBySlug(@PathVariable String slug) {
+        return walkService.getWalkBySlug(slug);
+    }
+
+
     @GetMapping("{slug}")
     public void getImages(@PathVariable String slug, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
