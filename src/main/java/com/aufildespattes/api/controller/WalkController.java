@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,12 +57,14 @@ public class WalkController {
         API_KEY = env.getProperty("API_KEY");
     }
 
+    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @GetMapping("/walks")
     public ResponseEntity<Iterable<Walk>> getWalks() {
         Iterable<Walk> walks = walkService.getWalks();
         return ResponseEntity.ok(walks);
     }
 
+    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @PostMapping(path = "/walk")
     public ResponseEntity<Walk> saveWalk(@Valid @RequestBody Walk walk) {
 
@@ -84,7 +87,8 @@ public class WalkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    
+    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @PostMapping(path = "/image")
     public WalkImage saveWalkImagre(@RequestParam("image") MultipartFile file,
             @NotBlank @RequestParam("slug") String walkSlug) throws IOException {
@@ -124,12 +128,13 @@ public class WalkController {
         }
     }
 
+    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @GetMapping("walk/{slug}")
     public Walk getWalkBySlug(@PathVariable String slug) {
         return walkService.getWalkBySlug(slug);
     }
 
-
+    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @GetMapping("{slug}")
     public void getImages(@PathVariable String slug, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
