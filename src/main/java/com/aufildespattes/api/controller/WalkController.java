@@ -98,7 +98,7 @@ public class WalkController {
         Walk updatedWalk = walkService.saveWalk(walkToUpdate);
         return ResponseEntity.ok(updatedWalk);
     }
-    
+
     @PostMapping(path = "/image")
     public WalkImage saveWalkImagre(@RequestParam("image") MultipartFile file,
             @NotBlank @RequestParam("slug") String walkSlug) throws IOException {
