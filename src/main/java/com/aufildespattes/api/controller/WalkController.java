@@ -36,6 +36,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class WalkController {
 
     private static final String GEOCODING_URI = "https://maps.googleapis.com/maps/api/geocode/json";
@@ -57,14 +58,12 @@ public class WalkController {
         API_KEY = env.getProperty("API_KEY");
     }
 
-    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @GetMapping("/walks")
     public ResponseEntity<Iterable<Walk>> getWalks() {
         Iterable<Walk> walks = walkService.getWalks();
         return ResponseEntity.ok(walks);
     }
 
-    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @PostMapping(path = "/walk")
     public ResponseEntity<Walk> saveWalk(@Valid @RequestBody Walk walk) {
 
@@ -88,7 +87,6 @@ public class WalkController {
         }
     }
 
-    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @PutMapping(path = "/walk/{slug}")
     public ResponseEntity<Walk> updateWalk(@PathVariable String slug, @Valid @RequestBody Walk walk) {
         Walk walkToUpdate = walkService.getWalkBySlug(slug);
@@ -101,7 +99,6 @@ public class WalkController {
         return ResponseEntity.ok(updatedWalk);
     }
     
-    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @PostMapping(path = "/image")
     public WalkImage saveWalkImagre(@RequestParam("image") MultipartFile file,
             @NotBlank @RequestParam("slug") String walkSlug) throws IOException {
@@ -141,13 +138,11 @@ public class WalkController {
         }
     }
 
-    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @GetMapping("walk/{slug}")
     public Walk getWalkBySlug(@PathVariable String slug) {
         return walkService.getWalkBySlug(slug);
     }
 
-    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
     @GetMapping("{slug}")
     public void getImages(@PathVariable String slug, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
