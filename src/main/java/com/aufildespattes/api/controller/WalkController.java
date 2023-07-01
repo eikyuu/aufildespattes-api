@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,6 +86,19 @@ public class WalkController {
         } catch (RestClientException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")
+    @PutMapping(path = "/walk/{slug}")
+    public ResponseEntity<Walk> updateWalk(@PathVariable String slug, @Valid @RequestBody Walk walk) {
+        Walk walkToUpdate = walkService.getWalkBySlug(slug);
+        if (walkToUpdate == null) {
+            return ResponseEntity.notFound().build();
+        }
+        walkToUpdate.updateProperties(walk);
+        walkToUpdate.setSlug(Utils.formatSlug(walkToUpdate.getName()));
+        Walk updatedWalk = walkService.saveWalk(walkToUpdate);
+        return ResponseEntity.ok(updatedWalk);
     }
     
     @CrossOrigin(origins = "https://au-fil-des-pattes.vercel.app")

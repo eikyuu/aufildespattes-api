@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -214,5 +215,21 @@ public class Walk {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+    public void updateProperties(@Valid Walk walk) {
+		this.name = walk.getName();
+		this.slug = walk.getSlug();
+		this.description = walk.getDescription();
+		this.city = walk.getCity();
+		this.postalCode = walk.getPostalCode();
+		this.street = walk.getStreet();
+		this.latitude = walk.getLatitude();
+		this.longitude = walk.getLongitude();
+		this.obligatoryLeash = walk.getObligatoryLeash();
+		this.waterPoint = walk.isWaterPoint();
+		this.processionaryCaterpillarAlert = walk.isProcessionaryCaterpillarAlert();
+		this.cyanobacteriaAlert = walk.isCyanobacteriaAlert();
+		this.note = walk.getNote();
+    }
 
 }

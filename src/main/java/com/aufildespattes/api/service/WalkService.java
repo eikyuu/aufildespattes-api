@@ -36,5 +36,6 @@ public class WalkService {
     public Walk getWalkBySlug(String slug) {
         return walkRepository.findBySlug(slug);
     }
+    
 
 }
