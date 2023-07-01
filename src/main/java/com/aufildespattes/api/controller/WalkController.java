@@ -87,17 +87,17 @@ public class WalkController {
         }
     }
 
-    @PutMapping(path = "/walk/{slug}")
-    public ResponseEntity<Walk> updateWalk(@PathVariable String slug, @Valid @RequestBody Walk walk) {
-        Walk walkToUpdate = walkService.getWalkBySlug(slug);
-        if (walkToUpdate == null) {
-            return ResponseEntity.notFound().build();
-        }
-        walkToUpdate.updateProperties(walk);
-        walkToUpdate.setSlug(Utils.formatSlug(walkToUpdate.getName()));
-        Walk updatedWalk = walkService.saveWalk(walkToUpdate);
-        return ResponseEntity.ok(updatedWalk);
-    }
+    // @PutMapping(path = "/walk/{slug}")
+    // public ResponseEntity<Walk> updateWalk(@PathVariable String slug, @Valid @RequestBody Walk walk) {
+    //     Walk walkToUpdate = walkService.getWalkBySlug(slug);
+    //     if (walkToUpdate == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     walkToUpdate.updateProperties(walk);
+    //     walkToUpdate.setSlug(Utils.formatSlug(walkToUpdate.getName()));
+    //     Walk updatedWalk = walkService.saveWalk(walkToUpdate);
+    //     return ResponseEntity.ok(updatedWalk);
+    // }
 
     @PostMapping(path = "/image")
     public WalkImage saveWalkImagre(@RequestParam("image") MultipartFile file,
