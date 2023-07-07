@@ -36,7 +36,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://au-fil-des-pattes.up.railway.app/")
 public class WalkController {
 
     private static final String GEOCODING_URI = "https://maps.googleapis.com/maps/api/geocode/json";
